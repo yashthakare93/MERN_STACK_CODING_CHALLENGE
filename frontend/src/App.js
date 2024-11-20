@@ -1,10 +1,11 @@
 import './App.css';
-import TransactionList from './components/TransactionList';
+
+import TransactionsPage from './Pages/TransactionPage';
 
 function App() {
   return (
     <>
-      <TransactionList/>
+      <TransactionsPage/>
     </>
   );
 }
