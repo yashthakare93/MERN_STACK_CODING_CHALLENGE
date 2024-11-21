@@ -87,7 +87,7 @@ const Statistics = () => {
           ) : error ? (
             <p style={{ textAlign: "center", color: "red" }}>{error}</p>
           ) : (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "16px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1px",paddingInline:"10px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", gap: "80px" }}>
                 <h3 style={{ fontWeight: "bold" }}>Total Sale Amount</h3>
                 <p style={{ fontSize: "18px" }}>${statistics.totalSaleAmount}</p>

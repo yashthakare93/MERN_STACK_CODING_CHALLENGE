@@ -1,3 +1,5 @@
+const Transaction = require("../models/Transaction");
+
 const listTransactions = async (req, res) => {
   try {
     const { search = '', month = '', page = 1, perPage = 10 } = req.query;

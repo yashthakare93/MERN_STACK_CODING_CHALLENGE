@@ -1,7 +1,8 @@
 const express = require('express');
 const connectDB = require('./config/db');  
 const transactionRoutes = require('./routes/transactionRoute');
-const { getStatistics } = require('./controller/statisticController');
+const statisticRoutes = require('./routes/statisticRoute');
+const barRoutes = require('./routes/barRoutes');
 const cors = require('cors');
 
 const app = express();
@@ -15,7 +16,8 @@ app.use(express.json());
 
 // Routes
 app.use('/api/transactions', transactionRoutes); 
-app.use('/api', getStatistics); 
+app.use('/api/statistics', statisticRoutes);
+app.use('/api/bar-chart', barRoutes); 
 
 app.get('/', (req, res) => {
   res.send('API is running');
