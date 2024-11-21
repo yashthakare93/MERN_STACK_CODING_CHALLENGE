@@ -1,8 +1,9 @@
 const express = require('express');
 const connectDB = require('./config/db');  
-const transactionRoutes = require('./routes/transactionRoute');
-const statisticRoutes = require('./routes/statisticRoute');
-const barRoutes = require('./routes/barRoutes');
+const transactionRoute = require('./routes/transactionRoute');
+const statisticRoute = require('./routes/statisticRoute');
+const barRoute = require('./routes/barRoutes');
+const pieRoute = require('./routes/pieRoute');
 const cors = require('cors');
 
 const app = express();
@@ -15,9 +16,10 @@ app.use(cors());
 app.use(express.json());  
 
 // Routes
-app.use('/api/transactions', transactionRoutes); 
-app.use('/api/statistics', statisticRoutes);
-app.use('/api/bar-chart', barRoutes); 
+app.use('/api/transactions', transactionRoute); 
+app.use('/api/statistics', statisticRoute);
+app.use('/api/bar-chart', barRoute); 
+app.use('/api/pie-chart', pieRoute);
 
 app.get('/', (req, res) => {
   res.send('API is running');

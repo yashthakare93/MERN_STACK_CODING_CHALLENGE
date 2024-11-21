@@ -4,6 +4,7 @@ import TransactionTable from "../components/TransactionTable";
 import SelectMonth from "../components/SelectMonth";
 import Statistics from "../components/Statistics";
 import BarChartComponent from "../components/BarChartComponent";
+import PieChartComponent from "../components/PieChartComponent";
 
 const TransactionPage = () => {
     const [selectedMonth, setSelectedMonth] = useState("March");
@@ -31,7 +32,7 @@ const TransactionPage = () => {
         try {
             const response = await axios.get(`http://localhost:5000/api/transactions`, {
                 params: {
-                    month: formatMonthForAPI(selectedMonth),  
+                    month: formatMonthForAPI(selectedMonth),
                     search: searchText,
                     page: currentPage,
                     perPage: selectedPerPage,
@@ -118,6 +119,10 @@ const TransactionPage = () => {
             <div style={{ display: "flex", justifyContent: "center", paddingTop: "20px" }}>
                 <BarChartComponent selectedMonth={selectedMonth} />
             </div>
+            <div style={{ display: "flex", justifyContent: "center", paddingTop: "20px" }}>
+                <PieChartComponent selectedMonth={selectedMonth} />
+            </div>
+
         </div>
     );
 };

@@ -1,79 +1,63 @@
 import React, { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 
 Chart.register(CategoryScale);
 
-const BarChartComponent = () => {
+const PieChartComponent = () => {
     const [selectedMonth, setSelectedMonth] = useState("June");
-    const [barChartData, setBarChartData] = useState(null);
+    const [pieChartData, setPieChartData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
     ];
 
     useEffect(() => {
-        const fetchBarChartData = async () => {
+        const fetchData = async () => {
             setLoading(true);
             setError("");
             try {
-                const response = await fetch(
-                    `http://localhost:5000/api/bar-chart?selectedMonth=${selectedMonth}`
-                );
+                const response = await fetch(`http://localhost:5000/api/pie-chart?selectedMonth=${selectedMonth}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
                 const data = await response.json();
-                const labels = data.map((item) => item.range);
-                const counts = data.map((item) => item.count);
-
-                setBarChartData({
-                    labels,
-                    datasets: [
-                        {
-                            label: "Number of Items Sold",
-                            backgroundColor: "rgb(108,229,232)",
-                            data: counts,
-                        },
-                    ],
-                });
+                setPieChartData(data);
             } catch (error) {
-                console.error("Error fetching bar chart data:", error);
                 setError("Failed to load chart data.");
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchBarChartData();
+        fetchData();
     }, [selectedMonth]);
 
     const handleMonthChange = (event) => {
         setSelectedMonth(event.target.value);
     };
 
+    const data = {
+        labels: pieChartData.map(item => item.category),
+        datasets: [
+            {
+                data: pieChartData.map(item => item.count),
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40'],
+            },
+        ],
+    };
+
     return (
         <div style={{ padding: "20px", textAlign: "center" }}>
-            <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "20px" }}>
-                Bar Chart Stats -{" "}
+            <h2>
+                Pie Chart Stats -{" "}
                 <select
-                    id="month-select"
                     value={selectedMonth}
                     onChange={handleMonthChange}
                     style={{
@@ -93,6 +77,9 @@ const BarChartComponent = () => {
 
             <div
                 style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                     width: "800px",
                     height: "420px",
                     margin: "0 auto",
@@ -106,19 +93,15 @@ const BarChartComponent = () => {
                     <p>Loading chart data...</p>
                 ) : error ? (
                     <p style={{ color: "red" }}>{error}</p>
-                ) : barChartData ? (
-                    <Bar
-                        data={barChartData}
-                        options={{
-                            responsive: true, 
-                        }}
-                    />
+                ) : pieChartData.length > 0 ? (
+                    <Pie data={data} />
                 ) : (
                     <p>No data available.</p>
                 )}
             </div>
+
         </div>
     );
 };
 
-export default BarChartComponent;
+export default PieChartComponent;
