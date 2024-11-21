@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/db');  
 const transactionRoutes = require('./routes/transactionRoute');
+const { getStatistics } = require('./controller/statisticController');
 const cors = require('cors');
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/transactions', transactionRoutes); 
+app.use('/api', getStatistics); 
 
 app.get('/', (req, res) => {
   res.send('API is running');

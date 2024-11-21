@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TransactionTable from "../components/TransactionTable";
 import SelectMonth from "../components/SelectMonth";
+import Statistics from "../components/Statistics";
 
 const TransactionPage = () => {
     const [selectedMonth, setSelectedMonth] = useState("March");
@@ -17,7 +18,8 @@ const TransactionPage = () => {
         July: "07", August: "08", September: "09", October: "10", November: "11", December: "12"
     };
 
-    const formatMonth = (month) => {
+    // This function formats the month to YYYY-MM for API requests
+    const formatMonthForAPI = (month) => {
         const currentYear = new Date().getFullYear();
         const monthNumber = monthMapping[month] || "01";
         return `${currentYear}-${monthNumber}`;
@@ -28,7 +30,7 @@ const TransactionPage = () => {
         try {
             const response = await axios.get("http://localhost:5000/api/transactions", {
                 params: {
-                    month: formatMonth(selectedMonth),
+                    month: formatMonthForAPI(selectedMonth),  // Send formatted month to backend
                     search: searchText,
                     page: currentPage,
                     perPage: selectedPerPage,
@@ -73,13 +75,13 @@ const TransactionPage = () => {
                     width: "160px", height: "160px", backgroundColor: "white", borderRadius: "50%",
                     display: "flex", alignItems: "center", justifyContent: "center"
                 }}>
-                    <p style={{ color: "#464646", fontWeight: "bold", fontSize: "20px" }}>
+                    <p style={{ color: "#464646", fontWeight: "bold", fontSize: "20px", textAlign: "center" }}>
                         Transaction <br /> Dashboard
                     </p>
                 </div>
             </div>
 
-            <div style={{ display: "flex", justifyContent: "flex-end", padding: "10px" }}>
+            <div style={{ display: "flex", justifyContent: "center", padding: "10px" }}>
                 <SelectMonth
                     selectedMonth={selectedMonth}
                     value={searchText}
@@ -93,7 +95,7 @@ const TransactionPage = () => {
             </div>
 
             {isLoading ? (
-                <div>Loading transactions...</div>
+                <div style={{ textAlign: "center" }}>Loading transactions...</div>
             ) : transactions.length > 0 ? (
                 <>
                     <TransactionTable
@@ -104,11 +106,14 @@ const TransactionPage = () => {
                         onChange={handlePerPageChange}
                         page={currentPage}
                     />
-                  
                 </>
             ) : (
-                <div>No transactions found for the selected criteria.</div>
+                <div style={{ textAlign: "center" }}>No transactions found for the selected criteria.</div>
             )}
+
+            <div style={{ display: "flex", justifyContent: "center", paddingTop: "20px" }}>
+                <Statistics selectedMonth={selectedMonth} />
+            </div>
         </div>
     );
 };
