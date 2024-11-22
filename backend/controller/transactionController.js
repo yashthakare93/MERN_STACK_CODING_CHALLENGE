@@ -9,24 +9,22 @@ const listTransactions = async (req, res) => {
     if (search) {
       const numericSearch = parseFloat(search);
 
-      // Search filter
       if (!isNaN(numericSearch)) {
         searchFilter.$or = [
-          { id: numericSearch },       
-          { price: numericSearch },     
+          { id: numericSearch },
+          { price: numericSearch },
         ];
       }
 
-      // Search filter
       searchFilter.$or = searchFilter.$or || [];
       searchFilter.$or.push(
-        { title: { $regex: search, $options: 'i' } },      
-        { description: { $regex: search, $options: 'i' } },  
-        { category: { $regex: search, $options: 'i' } }     
+        { title: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } }
       );
     }
 
-    // Month filter
+    // Month filter logic
     if (month) {
       const months = [
         'January', 'February', 'March', 'April', 'May', 'June',
@@ -42,22 +40,22 @@ const listTransactions = async (req, res) => {
       }
     }
 
-    // Pagination and sorting
+    // Pagination and sorting 
     const currentPage = Math.max(1, parseInt(page, 10));
     const itemsPerPage = Math.max(1, parseInt(perPage, 10));
     const skip = (currentPage - 1) * itemsPerPage;
 
-    // Fetch total count and paginated data
-    const totalTransactions = await Transaction.countDocuments(searchFilter); 
+    const totalTransactions = await Transaction.countDocuments(searchFilter);
+
     const transactions = await Transaction.find(searchFilter)
       .skip(skip)
       .limit(itemsPerPage)
-      .sort({ dateOfSale: -1 })
+      .collation({ locale: 'en', numericOrdering: true })  
+      .sort({ id: 1 }) 
       .select('id title description price category image sold dateOfSale');
 
-
     const formattedTransactions = transactions.map(transaction => ({
-      id: transaction._id, 
+      id: transaction.id,
       title: transaction.title,
       price: transaction.price,
       description: transaction.description,
