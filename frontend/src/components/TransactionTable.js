@@ -138,7 +138,7 @@ const TransactionTable = ({
           >
             Previous
           </button>
-          <span>-</span>
+          <span> - </span>
           <button
             onClick={onNextPage}
             style={paginationBtnStyles}
