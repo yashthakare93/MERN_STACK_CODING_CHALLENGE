@@ -4,6 +4,7 @@ const transactionRoute = require('./routes/transactionRoute');
 const statisticRoute = require('./routes/statisticRoute');
 const barRoute = require('./routes/barRoutes');
 const pieRoute = require('./routes/pieRoute');
+const combinedRoute = require('./routes/combinedRoute');
 const cors = require('cors');
 
 const app = express();
@@ -20,6 +21,7 @@ app.use('/api/transactions', transactionRoute);
 app.use('/api/statistics', statisticRoute);
 app.use('/api/bar-chart', barRoute); 
 app.use('/api/pie-chart', pieRoute);
+app.use("/api/combined-data", combinedRoute);
 
 app.get('/', (req, res) => {
   res.send('API is running');

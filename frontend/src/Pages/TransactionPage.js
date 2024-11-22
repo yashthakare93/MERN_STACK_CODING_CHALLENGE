@@ -5,6 +5,7 @@ import SelectMonth from "../components/SelectMonth";
 import Statistics from "../components/Statistics";
 import BarChartComponent from "../components/BarChartComponent";
 import PieChartComponent from "../components/PieChartComponent";
+import CombinedComponent from "../components/CombinedComponent";
 
 const TransactionPage = () => {
     const [selectedMonth, setSelectedMonth] = useState("March");
@@ -122,6 +123,10 @@ const TransactionPage = () => {
             <div style={{ display: "flex", justifyContent: "center", paddingTop: "20px" }}>
                 <PieChartComponent selectedMonth={selectedMonth} />
             </div>
+            <div style={{ display: "flex", justifyContent: "center", paddingTop: "20px" }}>
+                <CombinedComponent />
+            </div>
+
 
         </div>
     );
